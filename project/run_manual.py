@@ -7,7 +7,6 @@ import random
 
 import minitorch
 
-
 class Network(minitorch.Module):
     def __init__(self):
         super().__init__()

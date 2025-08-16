@@ -32,12 +32,20 @@ class Module:
     def train(self) -> None:
         """Set the mode of this module and all descendent modules to `train`."""
         # TODO: Implement for Task 0.4.
-        raise NotImplementedError("Need to implement for Task 0.4")
+        for child in self.modules():
+            child.training = True
+            # recursively calling train() on each child
+            child.train()
+        self.training = True
 
     def eval(self) -> None:
         """Set the mode of this module and all descendent modules to `eval`."""
         # TODO: Implement for Task 0.4.
-        raise NotImplementedError("Need to implement for Task 0.4")
+
+        for child in self.modules():
+            child.training = False
+            child.eval()
+        self.training = False
 
     def named_parameters(self) -> Sequence[Tuple[str, Parameter]]:
         """Collect all the parameters of this module and its descendents.
@@ -48,12 +56,25 @@ class Module:
 
         """
         # TODO: Implement for Task 0.4.
-        raise NotImplementedError("Need to implement for Task 0.4")
+        all_parameters = []
+        for child_name, child in self._modules.items():
+            for name, param in child.named_parameters():
+                all_parameters.append((f"{child_name}.{name}", param))
+
+        for param_name, param in self._parameters.items():
+            parameters = (param_name, param)
+            all_parameters.append(parameters)
+        return all_parameters
 
     def parameters(self) -> Sequence[Parameter]:
         """Enumerate over all the parameters of this module and its descendents."""
         # TODO: Implement for Task 0.4.
-        raise NotImplementedError("Need to implement for Task 0.4")
+        parameters = []
+        for parameter in self.named_parameters():
+            param = parameter[1]
+            parameters.append(param)
+
+        return parameters
 
     def add_parameter(self, k: str, v: Any) -> Parameter:
         """Manually add a parameter. Useful helper for scalar parameters.

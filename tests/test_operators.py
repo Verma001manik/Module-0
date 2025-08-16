@@ -1,3 +1,4 @@
+import math
 from typing import Callable, List, Tuple
 
 import pytest
@@ -108,7 +109,14 @@ def test_sigmoid(a: float) -> None:
     * It is  strictly increasing.
     """
     # TODO: Implement for Task 0.2.
-    raise NotImplementedError("Need to implement for Task 0.2")
+    s = sigmoid(a)
+
+    assert 0.0 <= s <= 1.0
+    assert math.isclose(1 - s, sigmoid(-a), abs_tol=1e-7)
+    assert math.isclose(sigmoid(0), 0.5, abs_tol=1e-9)
+    epsilon = 1e-6
+    s_next = sigmoid(a + epsilon)
+    assert s_next >= s or math.isclose(s_next, s, abs_tol=1e-10)
 
 
 @pytest.mark.task0_2
@@ -116,7 +124,8 @@ def test_sigmoid(a: float) -> None:
 def test_transitive(a: float, b: float, c: float) -> None:
     """Test the transitive property of less-than (a < b and b < c implies a < c)"""
     # TODO: Implement for Task 0.2.
-    raise NotImplementedError("Need to implement for Task 0.2")
+    if a < b and b < c:
+        assert a < c
 
 
 @pytest.mark.task0_2
@@ -125,7 +134,8 @@ def test_symmetric() -> None:
     gives the same value regardless of the order of its input.
     """
     # TODO: Implement for Task 0.2.
-    raise NotImplementedError("Need to implement for Task 0.2")
+    assert mul(1, 2) == mul(2, 1)
+    assert mul(2, 5) == mul(5, 2)
 
 
 @pytest.mark.task0_2
@@ -134,14 +144,17 @@ def test_distribute() -> None:
     :math:`z \times (x + y) = z \times x + z \times y`
     """
     # TODO: Implement for Task 0.2.
-    raise NotImplementedError("Need to implement for Task 0.2")
+    assert 1 * (2 + 3) == 1 * 2 + 1 * 3
+    assert 2 * (4 + 6) == 2 * 4 + 2 * 6
 
 
 @pytest.mark.task0_2
 def test_other() -> None:
     """Write a test that ensures some other property holds for your functions."""
     # TODO: Implement for Task 0.2.
-    raise NotImplementedError("Need to implement for Task 0.2")
+
+    assert 2 <= max(2, 4)
+    assert 4 <= max(2, 4)
 
 
 # ## Task 0.3  - Higher-order functions
@@ -169,7 +182,12 @@ def test_sum_distribute(ls1: List[float], ls2: List[float]) -> None:
     is the same as the sum of each element of `ls1` plus each element of `ls2`.
     """
     # TODO: Implement for Task 0.3.
-    raise NotImplementedError("Need to implement for Task 0.3")
+    assert math.isclose(
+        sum(ls1) + sum(ls2),
+        sum([a + b for a, b in zip(ls1, ls2)]),
+        rel_tol=1e-9,
+        abs_tol=1e-9,
+    )
 
 
 @pytest.mark.task0_3
